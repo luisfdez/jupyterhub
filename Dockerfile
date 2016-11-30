@@ -61,7 +61,7 @@ RUN chown -R $NB_USER:root /home/$NB_USER
 RUN chown -R $NB_USER:root /src/jupyterhub
 RUN chown -R $NB_USER:root /srv/jupyterhub
 
-RUN ls -alh /home/$NB_USER/home/$NB_USER && \
+RUN ls -alh /home/$NB_USER && \
     ls -alh /src/jupyterhub && \
     ls -alh /srv/jupyterhub
 
@@ -85,8 +85,9 @@ ENV PATH=/opt/conda/bin:$PATH
 # Build Jupyterhub
 WORKDIR /src/jupyterhub
 
-RUN python setup.py js && pip install . && \
-    rm -rf $PWD ~/.cache ~/.npm
+RUN python setup.py js && pip install .
+# && \
+#    rm -rf $PWD ~/.cache ~/.npm
 
 # Get Ready for running
 WORKDIR /srv/jupyterhub/
