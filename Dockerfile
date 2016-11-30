@@ -22,7 +22,10 @@
 # from your docker directory.
 
 FROM debian:jessie
+
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
+
+USER root
 
 # install nodejs, utf8 locale, set CDN because default httpredir is unreliable
 ENV DEBIAN_FRONTEND noninteractive
@@ -36,7 +39,27 @@ RUN REPO=http://cdn-fastly.deb.debian.org && \
     apt-get remove -y locales && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Configure environment
+ENV CONDA_DIR /opt/conda
+ENV PATH $CONDA_DIR/bin:$PATH
+ENV SHELL /bin/bash
+ENV NB_USER jovyan
+ENV NB_UID 1000
+ENV HOME /home/$NB_USER
 ENV LANG C.UTF-8
+
+# Create jovyan user with UID=1000 and in the 'users' group
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
+    mkdir -p $CONDA_DIR && \
+    chown $NB_USER $CONDA_DIR
+
+USER $NB_UID
+
+# Setup jovyan home directory
+RUN mkdir /home/$NB_USER/work && \
+    mkdir /home/$NB_USER/.jupyter && \
+    echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
 
 # install Python + NodeJS with conda
 RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-4.2.12-Linux-x86_64.sh -O /tmp/miniconda.sh  && \
