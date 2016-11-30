@@ -61,6 +61,9 @@ RUN chown -R $NB_USER:root /home/$NB_USER
 RUN chown -R $NB_USER:root /src/jupyterhub
 RUN chown -R $NB_USER:root /srv/jupyterhub
 
+RUN ls -alh /home/$NB_USER/home/$NB_USER && \
+    ls -alh /src/jupyterhub && \
+    ls -alh /srv/jupyterhub
 
 USER $NB_UID
 
