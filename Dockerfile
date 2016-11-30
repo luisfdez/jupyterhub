@@ -54,6 +54,8 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     mkdir -p $CONDA_DIR && \
     chown $NB_USER $CONDA_DIR
 
+RUN chown -R $NB_USER:root /home/$NB_USER
+
 USER $NB_UID
 
 # Setup jovyan home directory
