@@ -73,13 +73,17 @@ RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-4.2.12-Linux-x86_64.s
 ENV PATH=/opt/conda/bin:$PATH
 
 ADD . /src/jupyterhub
+RUN chown -R $NB_USER:root /src/jupyterhub
 WORKDIR /src/jupyterhub
 
 RUN python setup.py js && pip install . && \
     rm -rf $PWD ~/.cache ~/.npm
 
 RUN mkdir -p /srv/jupyterhub/
+RUN chown -R $NB_USER:root /srv/jupyterhub
+
 WORKDIR /srv/jupyterhub/
+
 EXPOSE 8000
 
 LABEL org.jupyter.service="jupyterhub"
