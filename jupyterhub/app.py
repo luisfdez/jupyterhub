@@ -117,7 +117,7 @@ class NewToken(Application):
         ab01cd23ef45
     """
 
-    name = Unicode(getuser())
+    name = Unicode('jovyan')
 
     aliases = token_aliases
     classes = []
