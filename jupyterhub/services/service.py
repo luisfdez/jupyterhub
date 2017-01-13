@@ -172,7 +172,7 @@ class Service(LoggingConfigurable):
         Only used if the Hub is spawning the service.
         """
     ).tag(input=True)
-    user = Unicode(getuser(),
+    user = Unicode('jovyan',
         help="""The user to become when launching the service.
 
         If unspecified, run the service as the same user as the Hub.
