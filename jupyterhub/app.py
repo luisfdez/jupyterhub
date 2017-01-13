@@ -696,7 +696,7 @@ class JupyterHub(Application):
         """More informative log messages for failed filesystem access"""
         path = os.path.abspath(path)
         parent, fname = os.path.split(path)
-        user = getuser()
+        user = 'jovyan'
         if not os.path.isdir(parent):
             self.log.error("Directory %s does not exist", parent)
         if os.path.exists(parent) and not os.access(parent, os.W_OK):
