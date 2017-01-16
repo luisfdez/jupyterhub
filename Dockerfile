@@ -47,9 +47,6 @@ RUN echo "deb http://http.us.debian.org/debian unstable main non-free contrib" >
     echo "deb-src http://ftp.us.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list && \ 
     apt-get -y update && \
     apt-get install -y -t unstable libnss-wrapper && \
-    /usr/sbin/update-locale LANG=C.UTF-8 && \
-    locale-gen C.UTF-8 && \
-    apt-get remove -y locales && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
