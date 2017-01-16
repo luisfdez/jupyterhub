@@ -30,14 +30,22 @@ USER root
 # install nodejs, utf8 locale, set CDN because default httpredir is unreliable
 ENV DEBIAN_FRONTEND noninteractive
 RUN REPO=http://cdn-fastly.deb.debian.org && \
-    echo "deb $REPO/debian jessie main\ndeb $REPO/debian-security jessie/updates main" > /etc/apt/sources.list && \
-    echo "deb http://http.us.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list && \
-    echo "deb-src http://http.us.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list && \
-    echo "deb http://ftp.us.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb-src http://ftp.us.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list && \    
+    echo "deb $REPO/debian jessie main\ndeb $REPO/debian-security jessie/updates main" > /etc/apt/sources.list && \   
     apt-get -y update && \
     apt-get -y upgrade && \
-    apt-get -y install wget locales git bzip2 libnss-wrapper &&\
+    apt-get -y install wget locales git bzip2
+    /usr/sbin/update-locale LANG=C.UTF-8 && \
+    locale-gen C.UTF-8 && \
+    apt-get remove -y locales && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install libnss-wrapper
+RUN echo "deb http://http.us.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://http.us.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb http://ftp.us.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb-src http://ftp.us.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list && \ 
+    apt-get -y update && \
     apt-get install -y -t unstable libnss-wrapper && \
     /usr/sbin/update-locale LANG=C.UTF-8 && \
     locale-gen C.UTF-8 && \
